@@ -17,8 +17,6 @@ const api = async ({
         'https://rickandmortyapi.com/api/character?' + queryString
     ).then((res) => res.json());
 
-    console.log(data);
-
     return data;
 };
 

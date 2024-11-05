@@ -6,7 +6,8 @@ import NoElements from './NoElements';
 
 const App = () => {
     const [elements, setElements] = useState<Character[]>();
-    const [elementCount, setElementCount] = useState<number>();
+    const [pages, setPages] = useState(0);
+    const [elementCount, setElementCount] = useState(0);
     /**
      * Query options
      */
@@ -20,7 +21,8 @@ const App = () => {
         });
 
         setElements(results);
-        setElementCount(info?.count);
+        setPages(info?.pages ?? 0);
+        setElementCount(info?.count ?? 0);
     }, [search, page]);
 
     /**
@@ -35,8 +37,6 @@ const App = () => {
      * Logic for estimating number of pages
      * and creating array with page number option
      */
-    const pages =
-        elementCount && elementCount > 0 ? Math.floor(elementCount / 20) : 1;
     const pagesOptionsArray = [];
 
     for (let i = 1; i <= pages; i++) {
@@ -81,7 +81,7 @@ const App = () => {
             </div>
 
             {elements && elements.length > 0 ? (
-                <Grid elements={elements} />
+                <Grid elements={elements} count={elementCount} />
             ) : (
                 <NoElements />
             )}

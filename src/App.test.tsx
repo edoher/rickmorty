@@ -6,18 +6,14 @@ vi.mock('./api');
 
 describe('Basic App test', () => {
     beforeEach(() => {
-        vi.mocked(api).mockResolvedValue({
-            results: [],
-        });
+        vi.mocked(api).mockResolvedValue({});
 
         render(<App />);
     });
 
     it('Initially renders the App component', async () => {
         await waitFor(async () => {
-            expect(
-                await screen.findByText('Create new elements!')
-            ).toBeTruthy();
+            expect(await screen.findByText('No results found :(')).toBeTruthy();
         });
     });
 });
