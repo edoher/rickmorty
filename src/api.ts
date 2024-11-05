@@ -1,40 +1,25 @@
-import { ApiRequest, ApiResponse, GridElement } from './types';
+import { ApiRequest, Character, Info } from './types';
 
 const api = async ({
     search,
     page,
-    per_page,
-}: ApiRequest): Promise<ApiResponse> => {
-    const dataFetch = await fetch('/data.json', {
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-        },
-    });
+}: ApiRequest): Promise<Info<Character[]>> => {
+    const params = {
+        ...(page && { page }),
+        ...(search && { search }),
+    };
 
-    const data: GridElement[] = await dataFetch.json();
-    let count = data.length;
+    const queryString = new URLSearchParams(
+        params as Record<string, string>
+    ).toString();
 
-    let processedData = data;
+    const data = await fetch(
+        'https://rickandmortyapi.com/api/character?' + queryString
+    ).then((res) => res.json());
 
-    if (search) {
-        const searchRegex = new RegExp(search, 'i');
+    console.log(data);
 
-        processedData = processedData.filter((element) =>
-            searchRegex.test(element.title)
-        );
-
-        count = processedData.length;
-    }
-
-    if (page && per_page) {
-        const start = page === 1 ? 0 : (page - 1) * per_page;
-        const end = start + per_page;
-
-        processedData = processedData.slice(start, end);
-    }
-
-    return { data: processedData, count };
+    return data;
 };
 
 export default api;

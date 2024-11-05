@@ -1,21 +1,21 @@
-import { GridElement } from './types';
+import { Character } from './types';
 
 type Props = {
-    elements: GridElement[];
+    elements: Character[];
 };
 
 const Grid = ({ elements }: Props) => (
     <div className="grid gap-4 grid-cols-1 sm:grid-cols-3 lg:grid-cols-4">
-        {elements.map(({ title, description, imagePath }, index) => (
+        {elements.map(({ name, species, image }, index) => (
             <div className="grid-element" key={`grid-element-${index}`}>
                 <div className="relative pb-2/3">
                     <img
                         className="absolute h-full w-full object-cover"
-                        src={imagePath}
+                        src={image}
                     />
                 </div>
-                <h3 className="font-bold">{title}</h3>
-                <p>{description}</p>
+                <h3 className="font-bold">{name}</h3>
+                <p>{species}</p>
             </div>
         ))}
     </div>
