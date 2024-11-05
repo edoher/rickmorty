@@ -1,46 +1,43 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import api from './api';
-import { Character } from './types';
 import Grid from './Grid';
 import NoElements from './NoElements';
+import { useQuery } from '@tanstack/react-query';
+import { Character, Info } from './types';
 
 const GridContainer = () => {
-    const [elements, setElements] = useState<Character[]>();
-    const [pages, setPages] = useState(0);
-    const [elementCount, setElementCount] = useState(0);
     /**
      * Query options
      */
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(1);
 
-    const fetchData = useCallback(async () => {
-        const { results, info } = await api({
-            search: search,
-            page: page,
-        });
+    const { data, isFetching } = useQuery({
+        queryKey: ['api', search, page],
+        queryFn: () =>
+            api({
+                search: search,
+                page: page,
+            }),
+        placeholderData: {
+            info: { count: 0, pages: 0, next: null, prev: null },
+            results: [],
+        },
+    });
 
-        setElements(results);
-        setPages(info?.pages ?? 0);
-        setElementCount(info?.count ?? 0);
-    }, [search, page]);
-
-    /**
-     * Initial app data fetch
-     * (and subsequent when the fetch function changes)
-     */
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
+    // Get data from query (or placeholder data)
+    const { info, results } = data as Info<Character[]>;
 
     /**
-     * Logic for estimating number of pages
+     * Logic for displaying number of pages
      * and creating array with page number option
      */
     const pagesOptionsArray = [];
 
-    for (let i = 1; i <= pages; i++) {
-        pagesOptionsArray.push(i);
+    if (info?.pages) {
+        for (let i = 1; i <= info.pages; i++) {
+            pagesOptionsArray.push(i);
+        }
     }
 
     return (
@@ -84,8 +81,10 @@ const GridContainer = () => {
                 </div>
             </div>
 
-            {elements && elements.length > 0 ? (
-                <Grid elements={elements} count={elementCount} />
+            {isFetching ? (
+                <div>Loading characters...</div>
+            ) : results && results?.length > 0 ? (
+                <Grid elements={results} count={info?.count ?? 0} />
             ) : (
                 <NoElements />
             )}

@@ -13,11 +13,11 @@ const api = async ({
         params as Record<string, string>
     ).toString();
 
-    const data = await fetch(
+    const response = await fetch(
         'https://rickandmortyapi.com/api/character?' + queryString
-    ).then((res) => res.json());
+    );
 
-    return data;
+    return response.json();
 };
 
 export default api;
