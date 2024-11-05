@@ -56,7 +56,11 @@ const App = () => {
                         type="text"
                         onChange={(
                             event: React.ChangeEvent<HTMLInputElement>
-                        ) => setSearch(event.target.value)}
+                        ) => {
+                            setSearch(event.target.value);
+                            // reset page number, since newer search might have less results
+                            setPage(1);
+                        }}
                     />
                 </div>
 
