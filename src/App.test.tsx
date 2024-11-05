@@ -7,8 +7,7 @@ vi.mock('./api');
 describe('Basic App test', () => {
     beforeEach(() => {
         vi.mocked(api).mockResolvedValue({
-            data: [],
-            count: 0,
+            results: [],
         });
 
         render(<App />);
@@ -26,34 +25,64 @@ describe('Basic App test', () => {
 describe('Checks for App details', () => {
     beforeEach(() => {
         vi.mocked(api).mockResolvedValue({
-            data: [
+            info: {
+                count: 826,
+                pages: 42,
+                next: 'https://rickandmortyapi.com/api/character/?page=20',
+                prev: 'https://rickandmortyapi.com/api/character/?page=18',
+            },
+            results: [
                 {
-                    title: 'We believe',
-                    description: 'We believe',
-                    imagePath: 'sample',
+                    id: 361,
+                    name: 'Toxic Rick',
+                    status: 'Dead',
+                    species: 'Humanoid',
+                    type: "Rick's Toxic Side",
+                    gender: 'Male',
+                    origin: {
+                        name: 'Alien Spa',
+                        url: 'https://rickandmortyapi.com/api/location/64',
+                    },
+                    location: {
+                        name: 'Earth',
+                        url: 'https://rickandmortyapi.com/api/location/20',
+                    },
+                    image: 'https://rickandmortyapi.com/api/character/avatar/361.jpeg',
+                    episode: ['https://rickandmortyapi.com/api/episode/27'],
+                    url: 'https://rickandmortyapi.com/api/character/361',
+                    created: '2018-01-10T18:20:41.703Z',
                 },
                 {
-                    title: 'Avengers',
-                    description: 'Avengers',
-                    imagePath: 'sample',
-                },
-                {
-                    title: 'Yes',
-                    description: 'Yes',
-                    imagePath: 'sample',
+                    id: 361,
+                    name: 'Toxic Rick',
+                    status: 'Dead',
+                    species: 'Humanoid',
+                    type: "Rick's Toxic Side",
+                    gender: 'Male',
+                    origin: {
+                        name: 'Alien Spa',
+                        url: 'https://rickandmortyapi.com/api/location/64',
+                    },
+                    location: {
+                        name: 'Earth',
+                        url: 'https://rickandmortyapi.com/api/location/20',
+                    },
+                    image: 'https://rickandmortyapi.com/api/character/avatar/361.jpeg',
+                    episode: ['https://rickandmortyapi.com/api/episode/27'],
+                    url: 'https://rickandmortyapi.com/api/character/361',
+                    created: '2018-01-10T18:20:41.703Z',
                 },
             ],
-            count: 10,
         });
     });
 
-    it('Renders 3 elements', async () => {
+    it('Renders 2 elements', async () => {
         const { container } = render(<App />);
 
         await waitFor(async () => {
             expect(
                 container.getElementsByClassName('grid-element').length
-            ).toBe(3);
+            ).toBe(2);
         });
     });
 });

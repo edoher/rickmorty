@@ -6,7 +6,7 @@ const api = async ({
 }: ApiRequest): Promise<Info<Character[]>> => {
     const params = {
         ...(page && { page }),
-        ...(search && { search }),
+        ...(search && { name: search }),
     };
 
     const queryString = new URLSearchParams(
