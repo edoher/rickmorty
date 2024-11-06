@@ -1,4 +1,4 @@
-# Eduardo Hernández awesome Planday test :)
+# Eduardo Hernández awesome Rick and Morty API test
 
 ## React + TypeScript + Vite
 
